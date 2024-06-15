@@ -1,28 +1,57 @@
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.Scanner;
+
 
 public class Principal {
     public static void main(String[] args) throws IOException {
-        String endereco = "https://v6.exchangerate-api.com/v6/39cd47326a15613f1fed2705/mais recente/USD";
+        Scanner entrada = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
+        ConvesteValor convesteValor ;
 
-        URL url = new URL(endereco);
-        HttpURLConnection request = (HttpURLConnection) url.openConnection();
-        request.connect();
+        int opcao;
+        double moeda;
 
-        JsonParser jp = new JsonParser();
-        JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
-        JsonObject jsonobj = root.getAsJsonObject();
+        while (true){
 
-        String req_result = jsonobj.get("result").getAsString();
+            System.out.println("""
+                    ****************Convesto de Moeda*********************
+                    Escolha a opção de corveção de moeda
+                    
+                        1- Real brasileiro para Dólar americano
+                        2- Real brasileiro para Euro
+                        3- Dólar americano para Real brasileiro
+                        4- Euro para Real brasileiro
+                        5- Dólar americano para Euro
+                        6- Euro para Dólar americano
+                        7- Sair
+                    *****************************************************
+                    """);
+            opcao = entrada.nextInt();
+            if (opcao >0 && opcao <7){
+                System.out.println("Digite quantos em dinheiro você que conveste: ");
+                moeda = entrada.nextDouble();
+                convesteValor = new ConvesteValor(opcao,moeda);
+                System.out.println("O valor de "+moeda+" Convestido é: "+convesteValor.calcularMoeda());
+                System.out.println();
 
-        System.out.println(req_result);
+                scanner.nextLine();
+
+            } else if (opcao == 7) {
+                System.out.println("Fim do Programa!\n");
+                System.out.println("********************fim******************");
+                break;
+            }else {
+                System.out.println("Valor invalidor!");
+                System.out.println();
+                scanner.nextLine();
+            }
+
+        }
+        entrada.close();
+        scanner.close();
     }
+
+
 }
